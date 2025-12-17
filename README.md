@@ -82,6 +82,13 @@ chmod +x advanced-comics-converter.sh
 - Nome file: `[nome_originale].pdf`
 - Log errori: `comics_converter_errors.log` nella directory corrente
 
+
+oppure il pacchetto deb
+
+    sudo dpkg -i advanced-comics-converter_2.0.0_all.deb
+
+
+
 ## 📊 Funzionamento
 
 ### Processo di conversione
