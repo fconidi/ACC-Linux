@@ -257,7 +257,8 @@ Script rilasciato come software libero. Utilizzabile, modificabile e distribuibi
 
 ## 👤 Autore
 
-Creato per la gestione automatizzata di collezioni di fumetti digitali.
+Franco Conidi aka Edmond - SysLinuxOS
+System Integrator, Network Engineer, IT Consultant Blogger Linux Developer https://francoconidi.it https://syslinuxos.com
 
 ## 🔗 Link utili
 
@@ -305,8 +306,11 @@ sudo apt install imagemagick img2pdf pdftk unzip zenity coreutils parallel
 Install Winrar for Linux https://www.win-rar.com/rar-linux-mac.html
 
 wget https://www.win-rar.com/fileadmin/winrar-versions/rarlinux-x64-712.tar.gz
+
 tar -xvf rarlinux-x64-712.tar.gz
+
 cd rar/
+
 sudo cp rar unrar /usr/local/bin
 
 ### CBR tools (at least one required)
@@ -342,6 +346,12 @@ chmod +x advanced-comics-converter.sh
 3. Select the directory containing CBZ/CBR files from the dialog window
 
 4. Wait for conversion to complete while viewing the progress bar
+
+Or using deb package
+
+    sudo dpkg -i advanced-comics-converter_2.0.0_all.deb
+
+
 
 ### Output
 
