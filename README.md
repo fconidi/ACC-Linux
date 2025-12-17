@@ -35,8 +35,11 @@ sudo apt install imagemagick img2pdf pdftk unzip zenity coreutils parallel
 installare Winrar per Linux https://www.win-rar.com/rar-linux-mac.html
 
 wget https://www.win-rar.com/fileadmin/winrar-versions/rarlinux-x64-712.tar.gz
+
 tar -xvf rarlinux-x64-712.tar.gz
+
 cd rar/
+
 sudo cp rar unrar /usr/local/bin
 
 ### Strumenti per CBR (almeno uno richiesto)
