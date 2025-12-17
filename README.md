@@ -3,13 +3,14 @@
 > [🇮🇹 Versione Italiana](#versione-italiana) | [🇬🇧 English Version](#english-version)
 
 ---
+---
+---
+---
+[![Advanced Comics Converter CBZ/CBR in PDF](https://img.youtube.com/vi/gxKtQuFBChE/hqdefault.jpg)](https://www.youtube.com/watch?v=gxKtQuFBChE)
 
-
-
-
-
-https://youtu.be/gxKtQuFBChE?si=MCsYmdSQaBraBKq0
-
+----
+----
+----
 ## Versione Italiana
 
 Script bash avanzato per la conversione automatica di file CBZ/CBR in formato PDF con interfaccia grafica Zenity.
