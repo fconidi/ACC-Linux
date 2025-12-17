@@ -14,6 +14,17 @@
 
 Script bash avanzato per la conversione automatica di file CBZ/CBR in formato PDF con interfaccia grafica Zenity.
 
+----
+----
+
+DOWNLOAD
+
+<img width="230" height="230" alt="ACC-LINUX-QR" src="https://github.com/user-attachments/assets/6384d315-ffa0-4863-b385-319660e02070" />
+
+
+----
+----
+
 ## 📋 Caratteristiche
 
 - **Conversione automatica**: Trasforma tutti i file CBZ/CBR in PDF mantenendo la qualità delle immagini
@@ -549,4 +560,4 @@ Current version: 2.0.0 (see CHANGELOG.md for details)
 
 ---
 
-**Note**: This script is optimized for Linux/Unix systems. For Windows, consider using WSL (Windows Subsystem for Linux).
+**Note**: This script is optimized for Linux/Unix systems.
