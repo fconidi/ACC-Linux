@@ -4,6 +4,12 @@
 
 ---
 
+
+
+
+
+https://youtu.be/gxKtQuFBChE?si=MCsYmdSQaBraBKq0
+
 ## Versione Italiana
 
 Script bash avanzato per la conversione automatica di file CBZ/CBR in formato PDF con interfaccia grafica Zenity.
