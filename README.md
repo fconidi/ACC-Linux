@@ -19,6 +19,10 @@ Script bash avanzato per la conversione automatica di file CBZ/CBR in formato PD
 
 DOWNLOAD
 
+----
+https://buymeacoffee.com/fconidi/e/489972
+----
+
 <img width="230" height="230" alt="ACC-LINUX-QR" src="https://github.com/user-attachments/assets/6384d315-ffa0-4863-b385-319660e02070" />
 
 
@@ -297,6 +301,21 @@ Versione attuale: 2.0.0 (vedi CHANGELOG.md per dettagli)
 ## English Version
 
 Advanced bash script for automatic conversion of CBZ/CBR files to PDF format with Zenity graphical interface.
+
+----
+----
+----
+
+DOWNLOAD
+
+----
+https://buymeacoffee.com/fconidi/e/489972
+----
+
+<img width="230" height="230" alt="ACC-LINUX-QR" src="https://github.com/user-attachments/assets/6384d315-ffa0-4863-b385-319660e02070" />
+
+
+----
 
 ## 📋 Features
 
