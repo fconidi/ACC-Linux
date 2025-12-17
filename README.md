@@ -5,9 +5,8 @@
 ---
 ---
 ---
----
-[![Advanced Comics Converter CBZ/CBR in PDF](https://img.youtube.com/vi/gxKtQuFBChE/hqdefault.jpg)](https://www.youtube.com/watch?v=gxKtQuFBChE)
-
+[![ACC](https://img.youtube.com/vi/gxKtQuFBChE/hqdefault.jpg)](https://www.youtube.com/watch?v=gxKtQuFBChE)
+----
 ----
 ----
 ----
