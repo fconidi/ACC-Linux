@@ -1,582 +1,264 @@
-# Advanced Comics Converter
+# Advanced Comics Converter — ACC Linux 2.1.0
 
-> [🇮🇹 Versione Italiana](#versione-italiana) | [🇬🇧 English Version](#english-version)
+> [Versione italiana](#versione-italiana) | [English version](#english-version)
 
----
----
----
+## Download Linux
+
+Download e supporto / Download and support — Buy Me a Coffee:
+
+https://buymeacoffee.com/fconidi/e/489972
+
+<img width="230" height="230" alt="ACC-LINUX-QR" src="https://github.com/user-attachments/assets/6384d315-ffa0-4863-b385-319660e02070" />
+
+## Versione italiana
+
+Advanced Comics Converter **2.1.0** converte ricorsivamente archivi CBZ/CBR in PDF,
+con interfaccia Zenity oppure da terminale. Richiede Linux, Bash >= 4.1 e img2pdf >= 0.4.4.
+
+### Installazione e avvio
+
+Scarica la distribuzione Linux dal link Buy Me a Coffee qui sopra.
+Su Debian, Ubuntu e derivate puoi installare il pacchetto 2.1.0 dalla
+cartella in cui lo hai scaricato:
+
+```bash
+sudo apt install ./advanced-comics-converter_2.1.0_all.deb
+advanced-comics-converter --version
+```
+
+APT gestisce anche le dipendenze disponibili nei repository configurati.
+Per preparare manualmente le dipendenze:
+
+```bash
+sudo apt install imagemagick img2pdf pdftk-java unzip zenity parallel file python3
+# Per CBR, installare almeno un estrattore disponibile nella propria distribuzione:
+sudo apt install unrar
+```
+
+Sono supportati `unrar`, `rar`, `unar` e `7z`, in questo ordine. `rar` serve anche
+per tentare la riparazione di una copia privata degli archivi corrotti. Per RAR
+compressi, il pacchetto che fornisce `7z` deve includere il decoder RAR.
+
+Dopo l'installazione del pacchetto, avviare `advanced-comics-converter` dal terminale
+o dal menu applicazioni.
+
+1. Avvia **Advanced Comics Converter** dal menu oppure esegui `advanced-comics-converter`.
+2. Seleziona la cartella che contiene i fumetti: vengono cercate anche le sottocartelle.
+3. Segui la barra di avanzamento; puoi annullare il lavoro dalla finestra.
+4. Controlla il riepilogo dei convertiti, saltati e falliti.
+5. Apri i PDF creati accanto agli archivi originali.
+
+Esempio: `/home/utente/Fumetti/Volume 01.cbz` produce
+`/home/utente/Fumetti/Volume 01.pdf`.
+
+Per avviare gli script del pacchetto scaricato, conserva `lib.sh` accanto
+ad `advanced-comics-converter.sh`, entra nella loro cartella ed esegui:
+
+```bash
+bash ./advanced-comics-converter.sh
+```
+
+### Uso da terminale
+
+`--directory` abilita la modalità senza finestre; senza questa opzione viene
+mostrata la selezione della cartella tramite Zenity.
+
+```bash
+advanced-comics-converter --directory /percorso/fumetti --jobs 2
+advanced-comics-converter --directory /percorso/fumetti --log-file /tmp/conversione.log
+advanced-comics-converter --directory /percorso/fumetti --jpeg-quality 85
+advanced-comics-converter --help
+```
+
+| Opzione | Comportamento |
+| --- | --- |
+| `--directory DIR` | Scansione ricorsiva senza interfaccia grafica. |
+| `--jobs N` | Numero positivo di archivi elaborati contemporaneamente; predefinito: 80% delle CPU disponibili. |
+| `--log-file FILE` | Percorso del log, relativo alla cartella di avvio oppure assoluto. |
+| `--jpeg-quality 1..100` | Ricodifica esplicita in JPEG con perdita; predefinito: conservazione delle immagini originali. |
+| `--version` | Visualizza la versione. |
+
+Il parallelismo predefinito controlla il numero di processi, non impone un limite
+all'uso della CPU. Per contenere la RAM usare, ad esempio, `--jobs 2`.
+In modalità JPEG, `MAGICK_THREAD_LIMIT` vale 1 se non già configurato.
+
+### Conversione, output e sicurezza dei file
+
+- Il formato ZIP/RAR viene rilevato dal contenuto: gli archivi originali non
+  vengono rinominati né modificati. Le estensioni maiuscole sono accettate.
+- Sottocartelle e nomi delle pagine sono conservati durante l'estrazione;
+  l'ordine naturale del percorso relativo distingue `2.png` da `10.png`.
+- Ogni immagine produce una pagina. GIF animate e TIFF multipagina utilizzano
+  il primo fotogramma. File README e metadati macOS vengono ignorati.
+- img2pdf genera un unico documento mantenendo le immagini originali.
+  PDFtk verifica la leggibilità e il conteggio delle pagine, senza unire PDF intermedi.
+- Il PDF `<nome_archivio>.pdf` compare accanto all'archivio solo dopo la verifica.
+  Errori di estrazione, immagini danneggiate o pagine mancanti fanno fallire
+  l'intero archivio. Un eventuale PDF precedente resta intatto in caso di errore.
+- Un PDF esistente e leggibile viene saltato; uno vuoto o invalido viene rigenerato.
+  Se più archivi producono lo stesso percorso PDF, vengono segnalati come conflitti.
+- I temporanei sono privati e distinti per ogni lavoro. Le cartelle preesistenti
+  `<nome>_images` non vengono utilizzate o eliminate. I membri ZIP con percorsi
+  non sicuri, collegamenti simbolici o nomi duplicati vengono rifiutati.
+- Annullare la barra Zenity interrompe i processi della conversione. I PDF già
+  completati restano disponibili; gli output parziali vengono eliminati.
+
+### Log e codici di uscita
+
+Il log predefinito è `comics_converter_errors.log` nella cartella da cui è stato
+avviato il programma. Il percorso resta stabile, il contenuto viene aggiunto e
+include archivio elaborato, stderr degli strumenti e riepilogo dei risultati.
+
+| Codice | Significato |
+| --- | --- |
+| `0` | Tutti gli archivi sono stati convertiti o saltati perché già validi; anche cartella vuota. |
+| `1` | Almeno un archivio fallito, dipendenza mancante o errore operativo. |
+| `2` | Argomenti non validi. |
+| `130` | Annullamento dell'utente oppure segnale di interruzione. |
+
+### Problemi comuni
+
+| Problema | Cosa controllare |
+| --- | --- |
+| Dipendenza mancante | Installa il pacchetto richiesto e ripeti l'avvio. |
+| CBR non leggibile | Installa un estrattore supportato; se usi 7z, verifica che includa il decoder RAR. |
+| Finestra Zenity assente | Avvia da una sessione grafica oppure usa `--directory` per lavorare dal terminale. |
+| PDF non creato | Leggi il log, controlla integrità dell'archivio, permessi e spazio libero. |
+| Nome PDF in conflitto | Due archivi producono lo stesso nome: assegna nomi distinti agli archivi prima di riprovare. |
+| Conversione pesante | Riduci i processi contemporanei con `--jobs 1` o `--jobs 2`. |
+
+I PDF esistenti e leggibili vengono saltati. Per riconvertirne uno, spostalo
+prima in una cartella di backup e riesegui ACC. L'app non offre un'opzione
+`--force`. Conserva gli archivi originali per ripetere la conversione.
+
+I temporanei delle immagini e il PDF richiedono spazio libero: il fabbisogno
+dipende dalle immagini contenute negli archivi e dal numero di lavori simultanei.
+Per segnalare un problema indica versione dell'app, distribuzione Linux,
+comando usato ed errore presente nel log.
+
+## English version
+
+Advanced Comics Converter **2.1.0** recursively converts CBZ/CBR archives to PDF
+through Zenity or a headless CLI. Requires Linux, Bash >= 4.1 and img2pdf >= 0.4.4.
+
+### Installation and launch
+
+Download the Linux distribution from the Buy Me a Coffee link above.
+On Debian, Ubuntu and derivatives, install the 2.1.0 package from its download folder:
+
+```bash
+sudo apt install ./advanced-comics-converter_2.1.0_all.deb
+advanced-comics-converter --version
+```
+
+APT also handles dependencies available in your configured repositories.
+To prepare dependencies manually:
+
+```bash
+sudo apt install imagemagick img2pdf pdftk-java unzip zenity parallel file python3
+# For CBR, install at least one extractor available in your distribution:
+sudo apt install unrar
+```
+
+Supported extractors, in order: `unrar`, `rar`, `unar`, `7z`. After normal extraction
+fails, `rar` can attempt repair on a private copy of the archive. Compressed RAR
+files require a `7z` package with a RAR decoder when using that backend.
+Launch the installed `advanced-comics-converter` command or application menu entry.
+1. Open **Advanced Comics Converter** from the application menu, or run `advanced-comics-converter`.
+2. Select the comics folder; subfolders are searched recursively.
+3. Follow the progress bar or cancel from the window.
+4. Check the converted/skipped/failed summary.
+5. Open the PDFs saved beside the original archives.
+
+Example: `/home/user/Comics/Volume 01.cbz` produces
+`/home/user/Comics/Volume 01.pdf`.
+
+To run downloaded scripts directly, keep `lib.sh` beside
+`advanced-comics-converter.sh`, open their folder and run:
+
+```bash
+bash ./advanced-comics-converter.sh
+```
+
+### Headless options
+
+```bash
+advanced-comics-converter --directory /path/to/comics --jobs 2
+advanced-comics-converter --directory /path/to/comics --log-file /tmp/conversion.log
+advanced-comics-converter --directory /path/to/comics --jpeg-quality 85
+advanced-comics-converter --help
+```
+
+| Option | Behavior |
+| --- | --- |
+| `--directory DIR` | Recursive conversion without GUI dialogs; otherwise Zenity selects the folder. |
+| `--jobs N` | Positive number of concurrent archives; default: 80% of available CPUs. |
+| `--log-file FILE` | Absolute path or path relative to the invocation directory. |
+| `--jpeg-quality 1..100` | Explicit lossy JPEG reencoding; default preserves original image data. |
+| `--version` | Print the version. |
+
+The default concurrency controls job count rather than CPU utilization. Use
+`--jobs 2`, for example, to reduce memory demand. JPEG conversion defaults
+`MAGICK_THREAD_LIMIT` to 1 unless already configured.
+
+### Conversion and file preservation
+
+- ZIP/RAR signatures select the extractor without renaming or modifying input
+  archives. Uppercase extensions, spaces, quotes and newline filenames are supported.
+- Nested paths remain intact and pages use natural relative-path order.
+  Each image produces one page; animated GIFs and multipage TIFFs use the first
+  frame. README files and macOS metadata are ignored.
+- img2pdf creates one document from the original images. PDFtk checks readability
+  and page count; no intermediate page PDFs or merge step are used.
+- `<archive_name>.pdf` is published next to its archive only after validation.
+  An extraction error, damaged image or missing page fails the whole archive.
+  Failed regeneration preserves an existing PDF byte for byte.
+- Readable existing PDFs are skipped; empty/invalid PDFs are regenerated.
+  Archives sharing the same output path fail as conflicts.
+- Private, unique temporary directories protect existing `<name>_images` folders.
+  ZIP members with unsafe paths, symbolic links or duplicate names are rejected.
+- Cancelling Zenity progress stops conversion children and removes incomplete
+  outputs. Previously completed PDFs remain available.
+
+### Logs and exit codes
+
+The default `comics_converter_errors.log` stays in the invocation directory.
+Logs are appended and include archive paths, tool stderr, and conversion summaries.
+
+| Code | Meaning |
+| --- | --- |
+| `0` | Every archive converted or skipped as valid; also an empty input directory. |
+| `1` | An archive failed, a dependency is missing, or an operational error occurred. |
+| `2` | Invalid arguments. |
+| `130` | User cancellation or interruption signal. |
+
+### Troubleshooting
+
+| Problem | What to check |
+| --- | --- |
+| Missing dependency | Install the required package and launch again. |
+| Unreadable CBR | Install a supported extractor; a 7z backend needs its RAR decoder. |
+| No Zenity window | Use a graphical session or pass `--directory` for terminal operation. |
+| No PDF created | Read the log and check archive integrity, permissions and free space. |
+| Conflicting output names | Give the source archives distinct names before retrying. |
+| Heavy conversion | Reduce concurrency with `--jobs 1` or `--jobs 2`. |
+
+Readable existing PDFs are skipped. To recreate one, move it to a backup
+folder first and rerun ACC. There is no `--force` option. Keep source archives
+so you can convert them again.
+
+Temporary images and the output PDF need free disk space; requirements depend
+on archive contents and concurrent jobs. When reporting an issue, include the
+app version, Linux distribution, command used and relevant log error.
+
+## Video
+
+Video dimostrativo della versione precedente / Previous-version demonstration:
+
 [![ACC](https://img.youtube.com/vi/gxKtQuFBChE/hqdefault.jpg)](https://www.youtube.com/watch?v=gxKtQuFBChE)
-----
-----
-----
-----
-## Versione Italiana
 
-Script bash avanzato per la conversione automatica di file CBZ/CBR in formato PDF con interfaccia grafica Zenity.
+## License and author
 
-----
-----
-
-DOWNLOAD
-
-----
-https://buymeacoffee.com/fconidi/e/489972
-----
-
-<img width="230" height="230" alt="ACC-LINUX-QR" src="https://github.com/user-attachments/assets/6384d315-ffa0-4863-b385-319660e02070" />
-
-
-----
-----
-
-## 📋 Caratteristiche
-
-- **Conversione automatica**: Trasforma tutti i file CBZ/CBR in PDF mantenendo la qualità delle immagini
-- **Interfaccia grafica**: Utilizza Zenity per una selezione intuitiva delle directory e feedback visivo
-- **Elaborazione parallela**: Sfrutta GNU Parallel per processare più file contemporaneamente (fino all'80% dei core disponibili)
-- **Barra di progresso**: Visualizzazione in tempo reale dello stato di conversione
-- **Validazione estensioni**: Controlla e corregge automaticamente le estensioni errate basandosi sui magic bytes
-- **Test di integrità**: Verifica l'integrità dei file CBZ prima dell'estrazione
-- **Supporto multi-formato RAR**: Tenta l'estrazione con rar, unar, unrar e 7z in sequenza
-- **Riparazione automatica**: Utilizza `rar r` per tentare di riparare archivi CBR corrotti
-- **Skip intelligente**: Salta automaticamente i file già convertiti
-- **Logging selettivo**: Registra solo gli errori critici per facilitare il debugging
-- **Pulizia automatica**: Rimuove file temporanei e metadati macOS
-
-## 🔧 Requisiti
-
-### Dipendenze obbligatorie
-
-```bash
-sudo apt install imagemagick img2pdf pdftk unzip zenity coreutils parallel
-```
-
-### Dipendenze ALTAMENTE CONSIGLIATA
-
-installare Winrar per Linux https://www.win-rar.com/rar-linux-mac.html
-
-wget https://www.win-rar.com/fileadmin/winrar-versions/rarlinux-x64-712.tar.gz
-
-tar -xvf rarlinux-x64-712.tar.gz
-
-cd rar/
-
-sudo cp rar unrar /usr/local/bin
-
-### Strumenti per CBR (almeno uno richiesto)
-
-```bash
-# Opzione 1: rar (consigliato per riparazione)
-sudo apt install rar
-
-# Opzione 2: unar
-sudo apt install unar
-
-# Opzione 3: unrar
-sudo apt install unrar
-
-# Opzione 4: p7zip
-sudo apt install p7zip-full
-```
-
-## 🚀 Utilizzo
-
-### Modalità base
-
-1. Rendi eseguibile lo script:
-```bash
-chmod +x advanced-comics-converter.sh
-```
-
-2. Esegui lo script:
-```bash
-./advanced-comics-converter.sh
-```
-
-3. Seleziona la directory contenente i file CBZ/CBR dalla finestra di dialogo
-
-4. Attendi il completamento della conversione visualizzando la barra di progresso
-
-### Output
-
-- I file PDF vengono creati nella stessa directory dei file originali
-- Nome file: `[nome_originale].pdf`
-- Log errori: `comics_converter_errors.log` nella directory corrente
-
-
-oppure il pacchetto deb
-
-    sudo dpkg -i advanced-comics-converter_2.0.0_all.deb
-
-
-
-## 📊 Funzionamento
-
-### Processo di conversione
-
-1. **Selezione directory**: Interfaccia Zenity per la scelta della cartella
-2. **Verifica dipendenze**: Controllo automatico di tutti gli strumenti richiesti
-3. **Scansione file**: Ricerca ricorsiva di tutti i file .cbz e .cbr
-4. **Validazione estensioni**: Controllo dei magic bytes e correzione se necessario
-5. **Filtro skip**: Esclusione dei file già convertiti (PDF esistente)
-6. **Estrazione parallela**: Elaborazione simultanea con GNU Parallel
-7. **Conversione immagini**: Normalizzazione in formato JPG
-8. **Creazione PDF**: Generazione di PDF individuali per pagina
-9. **Merge finale**: Unione di tutte le pagine in un unico PDF
-10. **Pulizia**: Rimozione di file temporanei e directory di lavoro
-
-### Magic Bytes supportati
-
-- **ZIP (CBZ)**: `50 4B 03 04`, `50 4B 05 06`, `50 4B 07 08`
-- **RAR4 (CBR)**: `52 61 72 21`
-- **RAR5 (CBR)**: `06 00 00 00 52 61 72 21 1A 07 01 00`
-
-### Strategia di estrazione CBR
-
-Lo script tenta l'estrazione in questo ordine:
-
-1. **rar** con riparazione (`rar r -y`) - *consigliato*
-2. **unar** - estrazione e spostamento immagini
-3. **unrar** - estrazione diretta
-4. **7z** - fallback finale
-
-## 📝 Log e Debugging
-
-Il file `comics_converter_errors.log` contiene:
-
-- Timestamp di esecuzione
-- Directory selezionata
-- Errori di estrazione
-- Errori di conversione
-- Errori di merge PDF
-- Statistiche finali
-
-Esempio di log:
-```
-====================================================================
-Log Errori - Mar 10 Dic 2024 15:30:45 CET
-====================================================================
-Directory selezionata: /home/user/fumetti
-ERROR: ZIP extraction failed for /home/user/fumetti/corrupted.cbz
-SUCCESS: /home/user/fumetti/spiderman_001.cbz converted 24 pages
-====================================================================
-Summary:
-Converted files: 15
-Skipped files: 3
-Failed files: 1
-====================================================================
-```
-
-## 🎯 Casi d'uso
-
-### Convertire un'intera collezione
-
-```bash
-./advanced-comics-converter.sh
-# Seleziona la directory principale della collezione
-# Lo script processerà ricorsivamente tutte le sottodirectory
-```
-
-### Riconvertire file falliti
-
-Lo script skippa automaticamente i file già convertiti. Per riconvertire:
-
-1. Elimina i PDF falliti
-2. Riesegui lo script sulla stessa directory
-
-### Gestione file corrotti
-
-Lo script tenta automaticamente la riparazione dei CBR con `rar r`. Se fallisce:
-
-1. Controlla il log per identificare il file
-2. Prova manualmente: `rar r -y file.cbr`
-3. Riconverti il file riparato
-
-## ⚠️ Limitazioni
-
-- **Formati supportati**: Solo CBZ (ZIP) e CBR (RAR/RAR5)
-- **Immagini**: Conversione forzata a JPG per compatibilità
-- **Memoria**: L'elaborazione parallela richiede RAM proporzionale al numero di core
-- **Spazio disco**: Richiede spazio temporaneo pari a ~2x la dimensione del file più grande
-
-## 🔍 Risoluzione problemi
-
-### "Command not found"
-
-Installa le dipendenze mancanti:
-```bash
-sudo apt install [comando-mancante]
-```
-
-### "No RAR tool found"
-
-Installa almeno uno strumento RAR:
-```bash
-sudo apt install rar
-```
-
-### "Cannot access selected directory"
-
-Verifica i permessi della directory:
-```bash
-chmod +rx /path/to/directory
-```
-
-### File CBR non estratti
-
-1. Verifica quale strumento RAR è installato
-2. Testa manualmente l'estrazione:
-```bash
-rar t file.cbr  # test integrità
-unar -t file.cbr  # test con unar
-```
-
-### Zenity non si apre
-
-Verifica che X11 sia disponibile:
-```bash
-echo $DISPLAY
-```
-
-### Conversione troppo lenta
-
-Riduci il parallelismo modificando lo script:
-```bash
-parallel -j 50%  # invece di 80%
-```
-
-## 🛠️ Personalizzazione
-
-### Modificare il livello di parallelismo
-
-Linea 338:
-```bash
-printf "%s\n" "${FILES_TO_PROCESS[@]}" | parallel -j 80% '
-```
-
-Cambia `80%` con:
-- `50%` per sistemi con poca RAM
-- `100%` per sistemi potenti
-- `4` per un numero fisso di job
-
-### Modificare la qualità JPG
-
-Linea 180:
-```bash
-convert "$img" -quality 85 "$TEMPNAME" 2>/dev/null
-```
-
-Aggiungi `-quality [1-100]` per controllare la compressione
-
-### Abilitare log verboso
-
-Rimuovi tutti i `2>/dev/null` e `>/dev/null 2>&1` per vedere l'output completo
-
-## 📜 Licenza
-
-Script rilasciato come software libero. Utilizzabile, modificabile e distribuibile liberamente.
-
-## 👤 Autore
-
-Franco Conidi aka Edmond - SysLinuxOS
-System Integrator, Network Engineer, IT Consultant Blogger Linux Developer https://francoconidi.it https://syslinuxos.com
-
-## 🔗 Link utili
-
-- [ImageMagick Documentation](https://imagemagick.org/index.php)
-- [img2pdf Documentation](https://gitlab.mister-muffin.de/josch/img2pdf)
-- [PDFtk Documentation](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
-- [GNU Parallel Tutorial](https://www.gnu.org/software/parallel/parallel_tutorial.html)
-
-## 📅 Versione
-
-Versione attuale: 2.0.0 (vedi CHANGELOG.md per dettagli)
-
----
-
-**Note**: Questo script è ottimizzato per sistemi Linux/Unix. Per Windows, considera l'uso di WSL (Windows Subsystem for Linux).
-
----
-
-## English Version
-
-Advanced bash script for automatic conversion of CBZ/CBR files to PDF format with Zenity graphical interface.
-
-----
-----
-----
-
-DOWNLOAD
-
-----
-https://buymeacoffee.com/fconidi/e/489972
-----
-
-<img width="230" height="230" alt="ACC-LINUX-QR" src="https://github.com/user-attachments/assets/6384d315-ffa0-4863-b385-319660e02070" />
-
-
-----
-
-## 📋 Features
-
-- **Automatic conversion**: Transforms all CBZ/CBR files to PDF while maintaining image quality
-- **Graphical interface**: Uses Zenity for intuitive directory selection and visual feedback
-- **Parallel processing**: Leverages GNU Parallel to process multiple files simultaneously (up to 80% of available cores)
-- **Progress bar**: Real-time visualization of conversion status
-- **Extension validation**: Automatically checks and corrects wrong extensions based on magic bytes
-- **Integrity testing**: Verifies CBZ file integrity before extraction
-- **Multi-format RAR support**: Attempts extraction with rar, unar, unrar, and 7z sequentially
-- **Automatic repair**: Uses `rar r` to attempt repairing corrupted CBR archives
-- **Smart skip**: Automatically skips already converted files
-- **Selective logging**: Records only critical errors for easier debugging
-- **Automatic cleanup**: Removes temporary files and macOS metadata
-
-## 🔧 Requirements
-
-### Mandatory dependencies
-
-```bash
-sudo apt install imagemagick img2pdf pdftk unzip zenity coreutils parallel
-```
-
-Install Winrar for Linux https://www.win-rar.com/rar-linux-mac.html
-
-wget https://www.win-rar.com/fileadmin/winrar-versions/rarlinux-x64-712.tar.gz
-
-tar -xvf rarlinux-x64-712.tar.gz
-
-cd rar/
-
-sudo cp rar unrar /usr/local/bin
-
-### CBR tools (at least one required)
-
-```bash
-# Option 1: rar (recommended for repair)
-sudo apt install rar
-
-# Option 2: unar
-sudo apt install unar
-
-# Option 3: unrar
-sudo apt install unrar
-
-# Option 4: p7zip
-sudo apt install p7zip-full
-```
-
-## 🚀 Usage
-
-### Basic mode
-
-1. Make the script executable:
-```bash
-chmod +x advanced-comics-converter.sh
-```
-
-2. Run the script:
-```bash
-./advanced-comics-converter.sh
-```
-
-3. Select the directory containing CBZ/CBR files from the dialog window
-
-4. Wait for conversion to complete while viewing the progress bar
-
-Or using deb package
-
-    sudo dpkg -i advanced-comics-converter_2.0.0_all.deb
-
-
-
-### Output
-
-- PDF files are created in the same directory as the original files
-- File name: `[original_name].pdf`
-- Error log: `comics_converter_errors.log` in the current directory
-
-## 📊 How it works
-
-### Conversion process
-
-1. **Directory selection**: Zenity interface for folder selection
-2. **Dependencies check**: Automatic verification of all required tools
-3. **File scanning**: Recursive search for all .cbz and .cbr files
-4. **Extension validation**: Magic bytes checking and correction if necessary
-5. **Skip filter**: Exclusion of already converted files (existing PDF)
-6. **Parallel extraction**: Simultaneous processing with GNU Parallel
-7. **Image conversion**: Normalization to JPG format
-8. **PDF creation**: Generation of individual PDFs per page
-9. **Final merge**: Merging all pages into a single PDF
-10. **Cleanup**: Removal of temporary files and working directories
-
-### Supported Magic Bytes
-
-- **ZIP (CBZ)**: `50 4B 03 04`, `50 4B 05 06`, `50 4B 07 08`
-- **RAR4 (CBR)**: `52 61 72 21`
-- **RAR5 (CBR)**: `06 00 00 00 52 61 72 21 1A 07 01 00`
-
-### CBR extraction strategy
-
-The script attempts extraction in this order:
-
-1. **rar** with repair (`rar r -y`) - *recommended*
-2. **unar** - extraction and image moving
-3. **unrar** - direct extraction
-4. **7z** - final fallback
-
-## 📝 Logging and Debugging
-
-The `comics_converter_errors.log` file contains:
-
-- Execution timestamp
-- Selected directory
-- Extraction errors
-- Conversion errors
-- PDF merge errors
-- Final statistics
-
-Example log:
-```
-====================================================================
-Log Errori - Tue Dec 10 15:30:45 CET 2024
-====================================================================
-Directory selezionata: /home/user/comics
-ERROR: ZIP extraction failed for /home/user/comics/corrupted.cbz
-SUCCESS: /home/user/comics/spiderman_001.cbz converted 24 pages
-====================================================================
-Summary:
-Converted files: 15
-Skipped files: 3
-Failed files: 1
-====================================================================
-```
-
-## 🎯 Use cases
-
-### Convert an entire collection
-
-```bash
-./advanced-comics-converter.sh
-# Select the main collection directory
-# The script will recursively process all subdirectories
-```
-
-### Reconvert failed files
-
-The script automatically skips already converted files. To reconvert:
-
-1. Delete failed PDFs
-2. Re-run the script on the same directory
-
-### Handling corrupted files
-
-The script automatically attempts CBR repair with `rar r`. If it fails:
-
-1. Check the log to identify the file
-2. Try manually: `rar r -y file.cbr`
-3. Reconvert the repaired file
-
-## ⚠️ Limitations
-
-- **Supported formats**: Only CBZ (ZIP) and CBR (RAR/RAR5)
-- **Images**: Forced conversion to JPG for compatibility
-- **Memory**: Parallel processing requires RAM proportional to the number of cores
-- **Disk space**: Requires temporary space equal to ~2x the size of the largest file
-
-## 🔍 Troubleshooting
-
-### "Command not found"
-
-Install missing dependencies:
-```bash
-sudo apt install [missing-command]
-```
-
-### "No RAR tool found"
-
-Install at least one RAR tool:
-```bash
-sudo apt install rar
-```
-
-### "Cannot access selected directory"
-
-Check directory permissions:
-```bash
-chmod +rx /path/to/directory
-```
-
-### CBR files not extracted
-
-1. Check which RAR tool is installed
-2. Test extraction manually:
-```bash
-rar t file.cbr  # integrity test
-unar -t file.cbr  # test with unar
-```
-
-### Zenity doesn't open
-
-Verify X11 is available:
-```bash
-echo $DISPLAY
-```
-
-### Conversion too slow
-
-Reduce parallelism by modifying the script:
-```bash
-parallel -j 50%  # instead of 80%
-```
-
-## 🛠️ Customization
-
-### Modify parallelism level
-
-Line 338:
-```bash
-printf "%s\n" "${FILES_TO_PROCESS[@]}" | parallel -j 80% '
-```
-
-Change `80%` to:
-- `50%` for systems with low RAM
-- `100%` for powerful systems
-- `4` for a fixed number of jobs
-
-### Modify JPG quality
-
-Line 180:
-```bash
-convert "$img" -quality 85 "$TEMPNAME" 2>/dev/null
-```
-
-Add `-quality [1-100]` to control compression
-
-### Enable verbose logging
-
-Remove all `2>/dev/null` and `>/dev/null 2>&1` to see complete output
-
-## 📜 License
-
-Script released as free software. Freely usable, modifiable, and distributable.
-
-## 👤 Author
-
-Franco Conidi aka Edmond - SysLinuxOS
-System Integrator, Network Engineer, IT Consultant Blogger Linux Developer https://francoconidi.it https://syslinuxos.com
-
-## 🔗 Useful links
-
-- [ImageMagick Documentation](https://imagemagick.org/index.php)
-- [img2pdf Documentation](https://gitlab.mister-muffin.de/josch/img2pdf)
-- [PDFtk Documentation](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/)
-- [GNU Parallel Tutorial](https://www.gnu.org/software/parallel/parallel_tutorial.html)
-
-## 📅 Version
-
-Current version: 2.0.0 (see CHANGELOG.md for details)
-
----
-
-**Note**: This script is optimized for Linux/Unix systems.
+GPL-3.0-or-later; see [copyright](copyright).
+Franco Conidi aka Edmond — [francoconidi.it](https://francoconidi.it),
+[SysLinuxOS](https://syslinuxos.com).
