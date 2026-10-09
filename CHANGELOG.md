@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.1.0] - 2026-10-06
+
+### Versione italiana
+
+- **Corretto:** nessuna cancellazione di cartelle preesistenti o rinomina degli archivi; riparazione RAR solo su copie private.
+- **Corretto:** PDF pubblicati atomicamente dopo verifica di leggibilità e conteggio pagine; gli errori non lasciano PDF incompleti conteggiati come successi.
+- **Corretto:** estensioni maiuscole, nomi con newline, pagine in sottocartelle e collisioni tra percorsi di output.
+- **Corretto:** percorso assoluto del log, conservazione di stderr, codici di uscita e annullamento con arresto dei processi figli.
+- **Aggiunto:** CLI senza interfaccia grafica, numero di job, percorso del log e qualità JPEG opzionale.
+- **Modificato:** conversione senza perdita predefinita, un solo documento img2pdf, primo fotogramma per immagini animate/multipagina.
+- **Sicurezza:** estrazione ZIP rifiuta percorsi non sicuri, collegamenti simbolici e membri duplicati.
+
+### English version
+
+- **Fixed:** existing directories and source archives preserved; RAR repair only on private copies.
+- **Fixed:** atomic PDF publication after readability/page-count validation; failures cannot count incomplete PDFs as successful conversions.
+- **Fixed:** uppercase extensions, newline filenames, nested pages and conflicting output paths.
+- **Fixed:** absolute logfile paths, retained stderr, meaningful exit codes and cancellation of conversion children.
+- **Added:** headless CLI, configurable jobs/logfile and optional JPEG quality.
+- **Changed:** lossless conversion by default, one img2pdf document, first frame of animated/multipage images.
+- **Security:** ZIP extraction rejects unsafe paths, symbolic links and duplicate members.
+
 ## [2.0.0] - 2025-12-09
 
 > [🇮🇹 Versione Italiana](#versione-italiana) | [🇬🇧 English Version](#english-version)
@@ -388,4 +410,5 @@ First stable version of the Advanced Comics Converter script.
 - `⚠️ Breaking Changes` for changes incompatible with previous versions
 
 ---
+
 
