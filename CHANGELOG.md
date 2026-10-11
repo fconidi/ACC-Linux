@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.3.0] - 2026-10-10
+
+### Versione italiana
+
+- Protetti i log da collisioni con archivi, PDF e alias; limitati output e lavori del supervisore, migliorato l'annullamento.
+- Aggiunte preferenze XDG, filtri e durata dei risultati, preparazione GTK asincrona e messaggi in cinque lingue.
+- Documentata la nuova finestra GTK con una schermata della versione 2.3.0.
+
+### English version
+
+- Protect logs from source/PDF collisions and aliases; bound supervisor output and jobs, improve cancellation.
+- Add XDG preferences, result filters and duration, background GTK preparation and five UI languages.
+- Document the new GTK window with a version 2.3.0 screenshot.
+
+## [2.2.1] - 2026-10-10
+
+### Versione italiana
+
+- Portato su Linux il motore Python con PDF diretti, verifica delle pagine, output atomico e controllo SHA-256 della sorgente.
+- Aggiunta interfaccia GTK nativa con trascinamento, destinazione, avanzamento, annullamento e ripetizione degli errori.
+- Conservato il flusso Bash/Zenity precedente tramite `--legacy`.
+
+### English version
+
+- Port the Python engine to Linux with direct PDFs, page verification, atomic output and source SHA-256 checks.
+- Add native GTK file/folder drop, destination selection, progress, cancellation and retry.
+- Retain the previous Bash/Zenity workflow through `--legacy`.
+
 ## [2.1.0] - 2026-10-06
 
 ### Versione italiana
