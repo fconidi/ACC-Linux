@@ -39,6 +39,7 @@
 - **Aggiunto:** CLI senza interfaccia grafica, numero di job, percorso del log e qualità JPEG opzionale.
 - **Modificato:** conversione senza perdita predefinita, un solo documento img2pdf, primo fotogramma per immagini animate/multipagina.
 - **Sicurezza:** estrazione ZIP rifiuta percorsi non sicuri, collegamenti simbolici e membri duplicati.
+- **Sviluppo:** build Debian da sorgente canonica, dipendenze esplicite e documentazione bilingue aggiornata.
 
 ### English version
 
@@ -49,6 +50,7 @@
 - **Added:** headless CLI, configurable jobs/logfile and optional JPEG quality.
 - **Changed:** lossless conversion by default, one img2pdf document, first frame of animated/multipage images.
 - **Security:** ZIP extraction rejects unsafe paths, symbolic links and duplicate members.
+- **Development:** canonical-source Debian build, explicit dependencies and updated bilingual documentation.
 
 ## [2.0.0] - 2025-12-09
 
