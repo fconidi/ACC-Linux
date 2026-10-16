@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.4.0] - 2026-10-16
+
+### Versione italiana
+
+- Nuova opzione «Includi sottocartelle» (salvata nelle preferenze) e `--no-recursive` da terminale: una cartella può essere aggiunta con o senza le sue sottocartelle. Il comportamento predefinito non cambia.
+
+### English version
+
+- New "Include subfolders" option (saved in preferences) and `--no-recursive` in the terminal: add a folder with or without its subfolders. The default behavior is unchanged.
+
 ## [2.3.0] - 2026-10-10
 
 ### Versione italiana

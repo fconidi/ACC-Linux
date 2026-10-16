@@ -1,4 +1,4 @@
-# Advanced Comics Converter (ACC) — Linux 2.3.0
+# Advanced Comics Converter (ACC) — Linux 2.4.0
 
 [Versione italiana](#versione-italiana) | [English version](#english-version)
 
@@ -10,7 +10,7 @@ Download e supporto / Download and support — [Buy Me a Coffee](https://buymeac
 
 ## Versione italiana
 
-Advanced Comics Converter 2.3.0 converte archivi CBZ e CBR in PDF su Linux,
+Advanced Comics Converter 2.4.0 converte archivi CBZ e CBR in PDF su Linux,
 con ordine naturale delle pagine, qualità originale predefinita e verifica
 del risultato. La nuova finestra GTK mostra lo stato e le pagine per ogni fumetto,
 consente il trascinamento di file e cartelle, l'annullamento e la ripetizione
@@ -22,10 +22,10 @@ dei soli lavori falliti. Gli archivi originali restano intatti.
 
 ### Installazione e avvio
 
-Per installare il pacchetto 2.3.0, nella cartella che contiene il `.deb`:
+Per installare il pacchetto 2.4.0, nella cartella che contiene il `.deb`:
 
 ```bash
-sudo apt install ./advanced-comics-converter_2.3.0_all.deb
+sudo apt install ./advanced-comics-converter_2.4.0_all.deb
 advanced-comics-converter --gui
 ```
 
@@ -35,7 +35,10 @@ serve un decoder come `unrar`, `7z`/`7zz`, `unar` o `bsdtar`. L'app compare nel 
 
 ### Uso
 
-Trascina o aggiungi file e cartelle. Se lasci vuota la destinazione, ogni PDF
+Trascina o aggiungi file e cartelle. Con **Includi sottocartelle** attiva
+(predefinito) una cartella viene cercata ricorsivamente; disattivandola, o con
+`--no-recursive` da terminale, si usano solo i fumetti direttamente al suo interno.
+Se lasci vuota la destinazione, ogni PDF
 viene salvato accanto al fumetto. Lascia la qualità JPEG a 0 per conservare
 le immagini originali; scegli un valore da 1 a 100 solo se vuoi ricodificarle.
 Imposta processi e timeout, quindi premi **Converti**. La finestra permette di
@@ -57,16 +60,16 @@ argomento. Usa le sue precedenti dipendenze e il suo precedente comportamento.
 
 ## English version
 
-Advanced Comics Converter 2.3.0 converts CBZ and CBR archives to PDF on Linux
+Advanced Comics Converter 2.4.0 converts CBZ and CBR archives to PDF on Linux
 with natural page order, original quality by default and verified output.
 Its native GTK window supports file and folder drop, per-comic status and page
 counts, cancellation and retry of failed jobs. Source archives remain untouched.
-The [2.3.0 main-window screenshot](screenshots/main-window-2.3.0.png) is above.
+The [main-window screenshot](screenshots/main-window-2.3.0.png) (version 2.3.0) is above.
 
-To install the 2.3.0 package from the directory containing the `.deb`:
+To install the 2.4.0 package from the directory containing the `.deb`:
 
 ```bash
-sudo apt install ./advanced-comics-converter_2.3.0_all.deb
+sudo apt install ./advanced-comics-converter_2.4.0_all.deb
 advanced-comics-converter --gui
 ```
 
@@ -74,7 +77,9 @@ The engine needs Python 3.11+, img2pdf 0.6+, pikepdf 9+, Pillow 10+ and
 rarfile 4.2+. GTK 3/PyGObject is recommended for the desktop. Real RAR comics
 also need a decoder such as `unrar`, `7z`/`7zz`, `unar` or `bsdtar`. MATE lists the app in Graphics.
 
-Add or drop files and folders. Leave the output folder empty to save each PDF
+Add or drop files and folders. With **Include subfolders** on (default) a folder is
+searched recursively; turn it off, or use `--no-recursive` in the terminal, to take only
+the comics directly inside it. Leave the output folder empty to save each PDF
 beside its comic, and leave JPEG quality at 0 to preserve the original images.
 Choose processes and a timeout, then convert. The window shows each job and
 can cancel, retry failures, or open PDFs and logs.
